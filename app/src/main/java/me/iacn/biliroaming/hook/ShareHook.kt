@@ -45,16 +45,16 @@ class ShareHook(classLoader: ClassLoader) : BaseHook(classLoader) {
                 it.size == 2
             }.mapNotNull {
                 when {
-                    it[0] == "p" || it[0] == "t" -> "${it[0]}=${it[1]}"
+                    it[0] == "p" && it[1] != "1" || it[0] == "t" -> "${it[0]}=${it[1]}"
                     it[0] == "start_progress" -> "start_progress=${it[1]}&t=${it[1].toLong() / 1000}"
                     else -> null
                 }
-            }.joinToString("&", postfix = "&unique_k=2333")
+            }.joinToString("&")
             newUrl.encodedQuery(query)
         } else {
-            newUrl.appendQueryParameter("unique_k", "2333")
+            newUrl
         }
-        return newUrl.build().toString()
+        return newUrl.build().toString().replace("(www\.)?bilibili\.com/video".toRegex(), "b23.tv")
     }
 
     override fun startHook() {
