@@ -79,7 +79,7 @@ class ShareHook(classLoader: ClassLoader) : BaseHook(classLoader) {
                     }?.let { contentUrl ->
                         val resolvedUrl = (param.thisObject.getObjectField("link")?.let { it as String } ?: contentUrl)
                             .resolveB23URL()
-                        param.result = content.replace(contentUrl, transformUrl(resolvedUrl, miniProgramEnabled))
+                        param.result = content.replace(contentUrl, transformUrl(resolvedUrl, miniProgramEnabled)).replace("【(.+)\-哔哩哔哩】\\s+(http.+)".toRegex(), "【$1】\n$2")
                     }
                 }
             }
